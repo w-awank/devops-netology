@@ -32,3 +32,4 @@ override.tf.json
 # Исключаются файлы с названием .terraformrc и terraform.rc в корневой и любых вложенных директориях
 .terraformrc
 terraform.rc
+### New line
