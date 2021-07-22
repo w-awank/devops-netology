@@ -33,7 +33,7 @@
 	fi
 	done
 	```
-    > Решение. В данном скрипте 2 ошибки: забыли 2-ую закрывающуюся круглую скобку в строке while, а также не написали break для выхода из бесконечного цикла при успешном поднятии сервиса. Вот код правильного скрипта:
+    > Решение. В данном скрипте 3 ошибки: забыли 2-ую закрывающуюся круглую скобку в строке while, использовали дополнение лога >>, а не перезапись >, а также не написали break для выхода из бесконечного цикла при успешном поднятии сервиса. Вот код правильного скрипта:
     > ```bash
     > #!/usr/bin/env bash
     > while ((1==1))
@@ -42,7 +42,7 @@
     > if (($? != 0))
     > then
     > echo Service is DOWN
-    > date >> curl.log
+    > date > curl.log
     > else
     > echo Service is OK 
     > break
@@ -55,43 +55,24 @@
    > ```bash
    > #!/usr/bin/env bash
    > array_int=(0 1 2 3 4)
-   > ip1=192.168.88.11
-   > ip2=95.173.128.90
-   > ip3=194.105.131.10
-   > echo Checking HTTP availability of three servers: $ip1, $ip2, $ip3
+   > array_hosts=(192.168.88.11 95.173.128.90 194.105.131.10)
+   > 
+   > echo Checking HTTP availability of three servers: ${array_hosts[0]}, ${array_hosts[1]}, ${array_hosts[2]}
    > for i in ${array_int[@]}
    > do
-   >     curl -m 10 http://$ip1 1>/dev/null 2>&1
-   >     if (($? == 0))
-   >     then
-   >         date >> 3ipstatus.log
-   >         echo $ip1 is OK by TCP 80 >> 3ipstatus.log
-   >     else
-   >         date >> 3ipstatus.log
-   >         echo $ip1 is DOWN by TCP 80 >> 3ipstatus.log
-   >     fi
-   > 
-   >     curl -m 10 http://$ip2 1>/dev/null 2>&1
-   >     if (($? == 0))
-   >     then
-   >         date >> 3ipstatus.log
-   >         echo $ip2 is OK by TCP 80 >> 3ipstatus.log
-   >     else
-   >         date >> 3ipstatus.log
-   >         echo $ip2 is DOWN by TCP 80 >> 3ipstatus.log
-   >     fi
-   > 
-   >     curl -m 10 http://$ip3 1>/dev/null 2>&1
-   >     if (($? == 0))
-   >     then
-   >         date >> 3ipstatus.log
-   >         echo $ip3 is OK by TCP 80 >> 3ipstatus.log
-   >     else
-   >         date >> 3ipstatus.log
-   >         echo $ip3 is DOWN by TCP 80 >> 3ipstatus.log
-   >     fi
+   >     for j in ${!array_hosts[@]}
+   >     do
+   >         curl -m 10 http://${array_hosts[$j]} 1>/dev/null 2>&1
+   >         if (($? == 0))
+   >         then
+   >             date >> 3ipstatus.log
+   >             echo ${array_hosts[$j]} is OK by TCP 80 >> 3ipstatus.log
+   >         else
+   >             date >> 3ipstatus.log
+   >             echo ${array_hosts[$j]} is DOWN by TCP 80 >> 3ipstatus.log
+   >         fi
+   >     done
    >     sleep 5
-   > 
    > done
    > cat 3ipstatus.log
    > echo See log in file 3ipstatus.log
@@ -101,49 +82,31 @@
    > Решение.
    > ```bash
    > #!/usr/bin/env bash
-   > ip1=192.168.88.11
-   > ip2=95.173.128.90
-   > ip3=194.105.131.10
-   > echo Checking HTTP availability of three servers: $ip1, $ip2, $ip3
+   > array_hosts=(192.168.88.11 95.173.128.90 194.105.131.10)
+   > 
+   > echo Checking HTTP availability of three servers: ${array_hosts[0]}, ${array_hosts[1]}, ${array_hosts[2]}
    > while ((1==1))
    > do
-   >     curl -m 10 http://$ip1 1>/dev/null 2>&1
-   >     if (($? == 0))
-   >     then
-   >         date >> 3ipstatus.log
-   >         echo $ip1 is OK by TCP 80 >> 3ipstatus.log
-   >     else
-   >         date >> 3ipstatus.log
-   >         echo $ip1 is DOWN by TCP 80 >> 3iperror.log
-   >         break
-   >     fi
-   > 
-   >     curl -m 10 http://$ip2 1>/dev/null 2>&1
-   >     if (($? == 0))
-   >     then
-   >         date >> 3ipstatus.log
-   >         echo $ip2 is OK by TCP 80 >> 3ipstatus.log
-   >     else
-   >         date >> 3ipstatus.log
-   >         echo $ip2 is DOWN by TCP 80 >> 3iperror.log
-   >         break
-   >     fi
-   > 
-   >     curl -m 10 http://$ip3 1>/dev/null 2>&1
-   >     if (($? == 0))
-   >     then
-   >         date >> 3ipstatus.log
-   >         echo $ip3 is OK by TCP 80 >> 3ipstatus.log
-   >     else
-   >         date >> 3ipstatus.log
-   >         echo $ip3 is DOWN by TCP 80 >> 3iperror.log
-   >         break
-   >     fi
+   >     for j in ${!array_hosts[@]}
+   >     do
+   >         curl -m 10 http://${array_hosts[$j]} 1>/dev/null 2>&1
+   >         if (($? == 0))
+   >         then
+   >             date >> 3ipstatus.log
+   >             echo ${array_hosts[$j]} is OK by TCP 80 >> 3ipstatus.log
+   >         else
+   >             date >> 3iperror.log
+   >             echo ${array_hosts[$j]} is DOWN by TCP 80 >> 3iperror.log
+   >             cat 3iperror.log
+   >             echo See log in file 3ipstatus.log
+   >             echo See error in file 3iperror.log
+   >             exit 1
+   >         fi
+   >     done
    >     sleep 5
    > 
    > done
    > cat 3ipstatus.log
-   > cat 3iperror.log 2>/dev/null
    > echo See log in file 3ipstatus.log
    > echo See error in file 3iperror.log
    > ```
