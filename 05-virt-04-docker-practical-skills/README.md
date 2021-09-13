@@ -198,11 +198,11 @@ CMD ["Hey, netology”]
   > Решение.
   > 
   > Скрин1 веб-интерфейса Jenkins на Corretto:
-  > ![jenkins-corretto-screen1](jenkins-corretto-screen1.png)
+  > ![jenkins-corretto-screen1](jenkins-corretto-screen1.PNG)
   > Скрин2 веб-интерфейса Jenkins на Corretto после ввода пароля из файла контейнера:
-  > ![jenkins-corretto-screen2](jenkins-corretto-screen2.png)
+  > ![jenkins-corretto-screen2](jenkins-corretto-screen2.PNG)
   > Скрин3 веб-интерфейса Jenkins на Corretto после пропуска установки плагинов:
-  > ![jenkins-corretto-screen3](jenkins-corretto-screen3.png)
+  > ![jenkins-corretto-screen3](jenkins-corretto-screen3.PNG)
   > 
   > Скрины веб-интерфейса Jenkins на Ubuntu такие же.  
   
