@@ -1,5 +1,3 @@
----
-
 ## Задача 1
 
 Сценарий выполнения задачи:
@@ -114,6 +112,3 @@ Hey, Netology
 
 Соберите Docker образ с Ansible, загрузите на Docker Hub и пришлите ссылку вместе с остальными ответами к задачам.
 > Решение. https://hub.docker.com/repository/docker/wawank/my-ansible
-
-
----
